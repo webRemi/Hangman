@@ -23,7 +23,6 @@ int main()
     srand(time(0));
     int randomNumber = rand() % 10;
     char* word = wordlists[randomNumber];
-    printf("%s\n", word);
     printf("Welcome to the game!!!\n");
     int counter = 0;
     int counterArray = 0;
