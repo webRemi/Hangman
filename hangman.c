@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <time.h>
+#include <unistd.h>
+#include <string.h>
 
-int main()
+void drawHangman(int x)
 {
     // initialize all hangman state
     char* hangman1[] = {"State:\n _____ \n |  || \n    || \n    || \n    || \n   _||_\n\n", 
@@ -10,68 +12,62 @@ int main()
                         "State:\n _____ \n |  || \n o  || \n/|  || \n    || \n   _||_\n\n", 
                         "State:\n _____ \n |  || \n o  || \n/|\\ || \n    || \n   _||_\n\n", 
                         "State:\n _____ \n |  || \n o  || \n/|\\ || \n/   || \n   _||_\n\n", 
-                        "State:\n _____ \n |  || \n o  || \n/|\\ || \n/ \\ || \n   _||_\n\n"};
+                        "State:\n _____ \n |  || \n o  || \n/|\\ || \n/ \\ || \n   _||_\n\n",
+                        "State: Game Over!!!\n"};
+    printf("%s", hangman1[x]);
+}
 
-    // initialize list of words
+int main()
+{
     char* wordlists[] = {"sunshine", "elephant", "harmony", "whisper", "blossom", "enigma", "serendipity", "labyrinth", "cascade", "jubilant"};
-    
-    // initialize random 
     srand(time(0));
-    
-    // choose random number between 1 and 10
     int randomNumber = rand() % 10;
-    
-    // select element of array using random number
     char* word = wordlists[randomNumber];
-    
-    // for developer its the secret word
     printf("%s\n", word);
-    
-    // greetings and presentation
-    printf("Welcome to the hangman game!\n");
-    for (int j = 0; j < 6; j++)
+    printf("Welcome to the game!!!\n");
+    int counter = 0;
+    int counterArray = 0;
+    char discoveredChars[26] = {0};
+
+    while (1)
     {
-        
-    }
-    printf("Please choose a letter: ");
+        printf("Please choose a letter: ");
+        char letter;
+        scanf("%c", &letter);
+        getchar();
+        printf("You choosed letter %c\n", letter);
+        printf("Check if letter is in word...\n");
     
-    // stock letter of user and take input
-    char letter;
-    scanf("%c", &letter);
-    
-    // for developeer its the user letter
-    printf("You choosed letter %c\n", letter);
-        
-    // show state for word
-    printf("Word:\n\n");
+        sleep(3);
 
-    // store length of random word
-    int length = strlen(word);
+        discoveredChars[counterArray] = letter;
 
-    // clear screen
-    system("clear");    
-
-    // check if letter in word
-    char checkLetter = strchr(word, letter);
-    if (checkLetter)
-    {
-        // hint for users about length and char in word
-        for (int i = 0; i < length; i++)
+        int length = strlen(word);
+        char checkLetter = strchr(word, letter);
+        if (checkLetter) 
         {
-            if (word[i] == letter)
+            printf("Letter in word!\n");
+            for (int i = 0; i < length; i++)
             {
-                printf("%c", i);
-                printf("%c", letter);
+                if (strchr(discoveredChars, word[i]))
+                {
+                    printf("%c ", word[i]);
+                    
+                }
+                else
+                {
+                    printf("_ ");
+                }
             }
-            else
-            {
-                printf("_ ");
-            }   
         }
-    }   
-    else
-    {
-        // state of hangman
-        printf("%s", hangman1[1]);
+        else
+        {
+            printf("Letter not in word!\n");
+            drawHangman(counter);
+            counter++;
+        }
+        printf("\n");
+        counterArray++;
+
     }
 }
